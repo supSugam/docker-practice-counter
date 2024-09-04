@@ -1,20 +1,14 @@
-# Use the official Node.js image as a base
 FROM node:14
 
-# Set the working directory inside the container
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json (if available)
 COPY package*.json ./
 
-# Install Node.js dependencies
 RUN npm install
 
-# Copy the rest of the application code
 COPY . .
 
-# Expose the application port
-EXPOSE 3000
+ADD https://github.com/vishnubob/wait-for-it/raw/master/wait-for-it.sh /usr/wait-for-it.sh
+RUN chmod +x /usr/wait-for-it.sh
 
-# Start the application
-CMD ["node", "index.js"]
+CMD ["/usr/wait-for-it.sh", "db:3306", "--", "node", "index.js"]

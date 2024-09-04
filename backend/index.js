@@ -29,7 +29,7 @@ connection.connect((err) => {
 app.get('/api/count', (req, res) => {
   connection.query('SELECT count FROM counter WHERE id = 1', (err, results) => {
     if (err) throw err;
-    res.json({ count: results[0].count });
+    res.status(200).json({ count: results[0].count });
   });
 });
 
@@ -38,7 +38,7 @@ app.post('/api/increment', (req, res) => {
     'UPDATE counter SET count = count + 1 WHERE id = 1',
     (err) => {
       if (err) throw err;
-      res.json({ status: 'success' });
+      res.status(200).json({ status: 'success' });
     }
   );
 });
@@ -48,12 +48,11 @@ app.post('/api/decrement', (req, res) => {
     'UPDATE counter SET count = count - 1 WHERE id = 1',
     (err) => {
       if (err) throw err;
-      const count = getUpdatedCount();
-      res.json({ status: 'success' });
+      res.status(200).json({ status: 'success' });
     }
   );
 });
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server running at ${port}`);
 });
