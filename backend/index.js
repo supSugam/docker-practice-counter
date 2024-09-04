@@ -26,14 +26,14 @@ connection.connect((err) => {
   console.log('Connected to MySQL');
 });
 
-app.get('/count', (req, res) => {
+app.get('/api/count', (req, res) => {
   connection.query('SELECT count FROM counter WHERE id = 1', (err, results) => {
     if (err) throw err;
     res.json({ count: results[0].count });
   });
 });
 
-app.post('/increment', (req, res) => {
+app.post('/api/increment', (req, res) => {
   connection.query(
     'UPDATE counter SET count = count + 1 WHERE id = 1',
     (err) => {
@@ -43,7 +43,7 @@ app.post('/increment', (req, res) => {
   );
 });
 
-app.post('/decrement', (req, res) => {
+app.post('/api/decrement', (req, res) => {
   connection.query(
     'UPDATE counter SET count = count - 1 WHERE id = 1',
     (err) => {
