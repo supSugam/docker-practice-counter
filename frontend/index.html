@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Counter App</title>
+
+    <style>
+      body {
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        gap: 2rem;
+
+        h1 {
+          text-align: center;
+          color: #333;
+        }
+
+        .count {
+        }
+
+        .buttons {
+          display: flex;
+          gap: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Counter</h1>
+    <div id="count">0</div>
+    <div class="buttons">
+      <button id="increment">Increase Count</button>
+      <button id="decrement">Decrease Count</button>
+    </div>
+
+    <script>
+      let loading = true;
+      const BASE_URL = 'http://localhost:8080';
+      async function fetchCount() {
+        const response = await fetch(`${BASE_URL}/count`);
+        const data = await response.json();
+        document.getElementById('count').innerText = data.count;
+      }
+
+      async function incrementCount() {
+        const res = await fetch(`${BASE_URL}/increment`, {
+          method: 'POST',
+        }).then((res) => res.json());
+
+        if (res.status === 'success') {
+          document.getElementById('count').innerText =
+            +document.getElementById('count').innerText + 1;
+        }
+      }
+
+      async function decrementCount() {
+        const res = await fetch(`${BASE_URL}/decrement`, {
+          method: 'POST',
+        }).then((res) => res.json());
+        if (res.status === 'success') {
+          document.getElementById('count').innerText =
+            +document.getElementById('count').innerText - 1;
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        fetchCount();
+        document
+          .getElementById('increment')
+          .addEventListener('click', incrementCount);
+        document
+          .getElementById('decrement')
+          .addEventListener('click', decrementCount);
+      });
+    </script>
+  </body>
+</html>
