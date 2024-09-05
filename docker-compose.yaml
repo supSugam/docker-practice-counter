@@ -11,6 +11,8 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - '3306:3306'
+    networks:
+      - counter-net
 
   backend:
     build: ./backend
@@ -25,6 +27,8 @@ services:
       - DB_USER=user
       - DB_PASSWORD=password
       - DB_NAME=counter_db
+    networks:
+      - counter-net
 
   nginx:
     image: nginx:latest
@@ -35,6 +39,12 @@ services:
       - '5173:80'
     depends_on:
       - backend
+    networks:
+      - counter-net
+
+networks:
+  counter-net:
+    driver: bridge
 
 volumes:
   db_data:
